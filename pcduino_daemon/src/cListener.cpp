@@ -23,16 +23,16 @@
 //#include "cPcduinoLanSetting.h"
 //#include "cPcduinoWifiSetting.h"
 
+#include "cWorkQueue.h"
+#include "cWorkTask.h"
+
 CListener::CListener():
 m_udps(-1), m_exit(0), m_threadId(0)
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 CListener::~CListener()
 {
-    // TODO Auto-generated destructor stub
 }
 
 static void* daemon_thread(void * pArg)
@@ -119,6 +119,11 @@ void CListener::thread_loop()
     }
 }
 
+void *ifdown(void* pArg)
+{
+	system("echo fuck you\n");
+	return NULL;
+}
 
 static MSG_HANDLE_RETURN_TYPE pcduino_config(MSG_HANDLE_DEFINE_PARAMS)
 {
@@ -171,7 +176,8 @@ static MSG_HANDLE_RETURN_TYPE pcduino_config(MSG_HANDLE_DEFINE_PARAMS)
     CPcduinoWifiSetting wifiSetting(wifi);
     return wanSetting.apply() && lanSetting.apply() && wifiSetting.apply();
 #else
-    system("ifconfig eth0 down");
+    CWorkTask t(ifdown, NULL);
+    CWorkQueue::get_queue()->register_work_task_delay(t, 2);
 #endif
 }
 

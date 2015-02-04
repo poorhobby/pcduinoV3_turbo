@@ -10,6 +10,11 @@
 
 
 typedef void *(*WorkTaskFunc)(void *pArg);
+/**
+ * @brief task is very simple,
+ * 	only have a task function
+ * 	and a param for the function.
+ */
 class CWorkTask
 {
 public:
@@ -19,13 +24,14 @@ public:
         WTER_AGAIN,
     };
     CWorkTask();
+    CWorkTask(WorkTaskFunc f, void* m_pArg);
     virtual ~CWorkTask();
     EWorkTaskExecResult exec_task();
 
-    WorkTaskFunc m_task;
-    void *m_pArg;
-    long m_timeout;
-    long m_count;
+    WorkTaskFunc m_task;///< task function
+    void *m_pArg; ///< param for the function
+//    long m_timeout;
+//    long m_count;
 };
 
 #endif /* CWORKTASK_H_ */

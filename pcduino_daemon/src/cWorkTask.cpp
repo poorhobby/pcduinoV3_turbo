@@ -9,8 +9,13 @@
 #include "iostream"
 #include <sys/sysinfo.h>
 
+CWorkTask::CWorkTask(WorkTaskFunc f, void* m_pArg):
+m_task(f), m_pArg(m_pArg)
+{
+}
+
 CWorkTask::CWorkTask():
-m_task(NULL), m_pArg(NULL), m_count(1), m_timeout(0)
+m_task(NULL), m_pArg(NULL)
 {
 }
 
@@ -28,19 +33,8 @@ static long get_up_time()
 
 CWorkTask::EWorkTaskExecResult CWorkTask::exec_task()
 {
-    if (m_timeout != 0) {
-        long upTime = get_up_time();
-        if (upTime < m_timeout) {
-            return CWorkTask::WTER_TIME_NOT_ARRIVE;
-        }
-    }
     if (m_task != NULL) {
         m_task(m_pArg);
     }
-
-    if (m_count == 0 || --m_count > 0) {
-        return CWorkTask::WTER_AGAIN;
-    } else {
-        return CWorkTask::WTER_OVER;
-    }
+    return CWorkTask::WTER_OVER;
 }

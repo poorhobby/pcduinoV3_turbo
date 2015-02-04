@@ -9,6 +9,7 @@
 #define CWORKQUEUE_H_
 
 #include "cWorkTask.h"
+#include "cWorkTaskDelay.h"
 #include "list"
 #include "pthread.h"
 class CWorkQueue
@@ -20,22 +21,39 @@ public:
         WQ_PRI_SECOND,
         WQ_PRI_THIRD,
     };
+    enum EWorkQueueMutexType
+	{
+    	WQ_MUTEX_WORKING,
+		WQ_MUTEX_WAITING,
+
+		WQ_MUTEX_MAX,
+	};
+    enum EWorkQueueCondType
+	{
+    	WQ_COND_WORKING,
+		WQ_COND_WAITING,
+
+		WQ_COND_MAX,
+	};
+private:
     CWorkQueue();
+public:
+    static CWorkQueue* get_queue();
     virtual ~CWorkQueue();
-    bool register_work_task(CWorkTask task);
-    bool register_work_task_delay(CWorkTask task, long delay);
+    bool register_work_task(CWorkTask &task);
+    bool register_work_task_delay(CWorkTask &task, long delay);
     bool on_schedule();
     bool on_wait();
-    bool wake_up_queue();
-    bool wake_up_queue_delay(long wait);
-private:
-    std::list<CWorkTask> m_queue;
-    pthread_mutex_t m_mutex;///< protect the task queue.
-    pthread_cond_t m_cond;
-    pthread_mutex_t m_cmutex;
-    int m_awake;
+    bool pull_up();
 
-    std::list<CWorkTask> m_waitQueue;
+private:
+    std::list<CWorkTask> m_workingQueue;
+    pthread_mutex_t m_mutex[WQ_MUTEX_MAX];///< protect the task queue.
+    pthread_cond_t m_cond[WQ_COND_MAX];
+    pthread_t m_waitThread;
+    pthread_t m_workThread;
+
+    std::list<CWorkTaskDelay> m_waitingQueue;
 };
 
 #endif /* CWORKQUEUE_H_ */
