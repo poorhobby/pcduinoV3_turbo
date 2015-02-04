@@ -14,7 +14,7 @@ class CWorkTask
 {
 public:
     enum EWorkTaskExecResult {
-        WTER_SUCCESS,
+    	WTER_OVER,
         WTER_TIME_NOT_ARRIVE,
         WTER_AGAIN,
     };

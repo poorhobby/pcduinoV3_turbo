@@ -37,9 +37,10 @@ CWorkTask::EWorkTaskExecResult CWorkTask::exec_task()
     if (m_task != NULL) {
         m_task(m_pArg);
     }
+
     if (m_count == 0 || --m_count > 0) {
         return CWorkTask::WTER_AGAIN;
     } else {
-        return CWorkTask::WTER_SUCCESS;
+        return CWorkTask::WTER_OVER;
     }
 }
