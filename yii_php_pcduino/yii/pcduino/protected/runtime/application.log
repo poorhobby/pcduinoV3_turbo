@@ -1,0 +1,57 @@
+2015/02/02 08:05:59 [error] [exception.CException] exception 'CException' with message '属性 "PcduinoSetting.settings" 未被定义.' in /home/paul/workspace/yii_php_pcduino/yii/framework/base/CComponent.php:173
+Stack trace:
+#0 /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php(115): CComponent->__set('settings', '"{\\"wan_type\\":...')
+#1 /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/PcduinoController.php(150): PcduinoSetting->gatherSetting()
+#2 /home/paul/workspace/yii_php_pcduino/yii/framework/web/actions/CInlineAction.php(49): PcduinoController->actionSetting()
+#3 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CWebApplication.php(287): CController->run('Setting')
+#7 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CWebApplication.php(146): CWebApplication->runController('pcduino/Setting')
+#8 /home/paul/workspace/yii_php_pcduino/yii/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#9 /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/pcduino/index.php?r=pcduino/Setting
+HTTP_REFERER=http://192.168.254.136/pcduino/index.php?r=pcduino/Setting
+---
+2015/02/02 08:06:26 [error] [application] "{\"wan_type\":\"0\",\"wan_address\":\"192.168.0.1\",\"wan_netmask\":\"255.255.255.0\",\"wan_gateway\":\"192.168.0.100\",\"wan_pridns\":\"\",\"wan_secdns\":\"\",\"pppoe_username\":\"\",\"pppoe_password\":\"\",\"lan_address\":\"\",\"lan_netmask\":\"\",\"ssid\":\"pcduino\",\"channel\":\"1\",\"security_type\":\"1\",\"psk_key\":\"pcduino_key\"}"
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php (118)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/PcduinoController.php (150)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php (13)
+2015/02/02 08:25:15 [error] [php] Undefined property: stdClass::$pppoe_password (/home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php:140)
+Stack trace:
+#0 /home/paul/workspace/yii_php_pcduino/yii/framework/web/actions/CInlineAction.php(49): PcduinoController->actionSetting()
+#1 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(308): CInlineAction->runWithParams()
+#2 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(286): PcduinoController->runAction()
+#3 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(265): PcduinoController->runActionWithFilters()
+#4 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CWebApplication.php(287): PcduinoController->run()
+#5 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CWebApplication.php(146): CWebApplication->runController()
+#6 /home/paul/workspace/yii_php_pcduino/yii/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#7 /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php(13): CWebApplication->run()
+REQUEST_URI=/pcduino/index.php?r=pcduino/Setting
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php (140)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php (164)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/PcduinoController.php (150)
+2015/02/02 08:25:34 [error] [php] Undefined property: stdClass::$pppoe_password (/home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php:140)
+Stack trace:
+#0 /home/paul/workspace/yii_php_pcduino/yii/framework/web/actions/CInlineAction.php(49): PcduinoController->actionSetting()
+#1 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(308): CInlineAction->runWithParams()
+#2 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(286): PcduinoController->runAction()
+#3 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CController.php(265): PcduinoController->runActionWithFilters()
+#4 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CWebApplication.php(287): PcduinoController->run()
+#5 /home/paul/workspace/yii_php_pcduino/yii/framework/web/CWebApplication.php(146): CWebApplication->runController()
+#6 /home/paul/workspace/yii_php_pcduino/yii/framework/base/CApplication.php(169): CWebApplication->processRequest()
+#7 /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php(13): CWebApplication->run()
+REQUEST_URI=/pcduino/index.php?r=pcduino/Setting
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php (140)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/models/PcduinoSetting.php (164)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/PcduinoController.php (150)
+2015/02/03 03:28:10 [error] [application] 1
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/SiteController.php (95)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php (13)
+2015/02/03 03:28:10 [error] [application] /pcduino/index.php
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/SiteController.php (95)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php (13)
+2015/02/03 03:28:10 [error] [application] /pcduino/
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/protected/controllers/SiteController.php (95)
+in /home/paul/workspace/yii_php_pcduino/yii/pcduino/index.php (13)

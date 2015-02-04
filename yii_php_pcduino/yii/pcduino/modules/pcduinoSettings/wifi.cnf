@@ -1,0 +1,15 @@
+{
+	"wan_type":"0",
+	"wan_address":"192.168.0.1",
+	"wan_netmask":"255.255.255.0",
+	"wan_gateway":"192.168.0.100",
+	"wan_pridns":"","wan_secdns":"",
+	"pppoe_username":"",
+	"pppoe_password":"",
+	"lan_address":"",
+	"lan_netmask":"",
+	"ssid":"pcduino",
+	"channel":"1",
+	"security_type":"1",
+	"psk_key":"pcduino_key"
+}
