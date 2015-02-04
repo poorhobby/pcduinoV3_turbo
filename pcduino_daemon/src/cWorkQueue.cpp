@@ -114,21 +114,26 @@ bool CWorkQueue::pull_up()
  */
 bool CWorkQueue::on_wait()
 {
-	long now;
+	long now = get_up_time();;
 	std::list<CWorkTaskDelay>::iterator iter;
 	do {
 		pthread_mutex_lock(&m_mutex[CWorkQueue::WQ_MUTEX_WAITING]);
-		iter = m_waitingQueue.begin();
-		if((*iter).get_timeout() > now) {
-			long mDelay = (*iter).get_timeout() - now;
-			timespec delay;
-			delay.tv_sec = mDelay;
-			delay.tv_nsec = 0;
-			pthread_cond_timedwait(&m_cond[WQ_COND_WAITING], &m_mutex[CWorkQueue::WQ_MUTEX_WAITING], &delay);
+		if (! m_waitingQueue.empty()) {
+			iter = m_waitingQueue.begin();
+			if((*iter).get_timeout() > now) {
+				long mDelay = (*iter).get_timeout() - now;
+				timespec delay;
+				delay.tv_sec = mDelay;
+				delay.tv_nsec = 0;
+				pthread_cond_timedwait(&m_cond[WQ_COND_WAITING], &m_mutex[CWorkQueue::WQ_MUTEX_WAITING], &delay);
+			} else {
+				//need move the task to working queue.
+			}
 		} else {
 			// no task, wait for wake up by register_work_task_delay
 			pthread_cond_wait(&m_cond[WQ_COND_WAITING], &m_mutex[CWorkQueue::WQ_MUTEX_WAITING]);
 		}
+
 
 		now = get_up_time();
 
