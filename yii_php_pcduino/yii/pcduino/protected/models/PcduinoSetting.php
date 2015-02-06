@@ -24,6 +24,9 @@ class PcduinoSetting extends CFormModel
 	
 	public $lan_address;
 	public $lan_netmask;
+	public $dhcp_ip_start;
+	public $dhcp_ip_end;
+	// public $dhcp_ip_gateway;
 	
 	public $ssid;
 	public $channel;
@@ -55,7 +58,7 @@ class PcduinoSetting extends CFormModel
 				wan_netmask, wan_gateway, 
 				wan_pridns, wan_secdns,pppoe_username, 
 				pppoe_password, lan_address, 
-				lan_netmask, ssid, channel, 
+				lan_netmask, dhcp_ip_start, dhcp_ip_end, ssid, channel, 
 				security_type, psk_key',
 				'safe'),
 		);
@@ -69,6 +72,8 @@ class PcduinoSetting extends CFormModel
 		return array(
 			'lan_address' => 'LAN Address',
 			'lan_netmask' => 'LAN Netmask',
+			'dhcp_ip_start' => 'DHCP Address Start',
+			'dhcp_ip_end' => 'DHCP Address End',
 			'wan_type' => 'WAN Type',
 			'wan_address' => 'WAN Address',
 			'wan_netmask' => 'WAN Netmask',
@@ -114,6 +119,8 @@ class PcduinoSetting extends CFormModel
 		
 		$this->settings['lan']['lan_address'] = $this->lan_address;
 		$this->settings['lan']['lan_netmask'] = $this->lan_netmask;
+		$this->settings['lan']['dhcp_ip_start'] = $this->dhcp_ip_start;
+		$this->settings['lan']['dhcp_ip_end'] = $this->dhcp_ip_end;
 		
 		$this->settings['wifi']['ssid'] = $this->ssid;
 		$this->settings['wifi']['channel'] = $this->channel;
@@ -123,6 +130,31 @@ class PcduinoSetting extends CFormModel
 	
 	private function parseJsonData()
 	{
+		// $xmlfile = 'test.xml';
+// 
+		// $xmlparser = xml_parser_create();
+// 		
+		// // 打开文件并读取数据
+		// $fp = fopen($xmlfile, 'r');
+		// while ($xmldata = fread($fp, 4096)) 
+		  // {
+		  // // parse the data chunk
+		  // if (!xml_parse($xmlparser,$xmldata,feof($fp))) 
+		    // {
+		    // die( print "ERROR: "
+		    // . xml_get_error_code($xmlparser)
+		    // . "<br />"
+		    // . "Line: "
+		    // . xml_get_current_line_number($xmlparser)
+		    // . "<br />"
+		    // . "Column: "
+		    // . xml_get_current_column_number($xmlparser)
+		    // . "<br />");
+		    // }
+		  // }
+// 		
+		// xml_parser_free($xmlparser);
+
 		$this->wan_type = $this->settings['wan']['wan_type'];
 		$this->wan_address = $this->settings['wan']['wan_address'];
 		$this->wan_netmask = $this->settings['wan']['wan_netmask'];
@@ -134,11 +166,35 @@ class PcduinoSetting extends CFormModel
 		
 		$this->lan_address = $this->settings['lan']['lan_address'];
 		$this->lan_netmask = $this->settings['lan']['lan_netmask'];
+		$this->dhcp_ip_start = $this->settings['lan']['dhcp_ip_start'];
+		$this->dhcp_ip_end = $this->settings['lan']['dhcp_ip_end'];
 		
 		$this->ssid = $this->settings['wifi']['ssid'];
 		$this->channel = $this->settings['wifi']['channel'];
 		$this->security_type = $this->settings['wifi']['security_type'];
 		$this->psk_key = $this->settings['wifi']['psk_key'];
+	}
+
+	public function useDefaultSettings()
+	{
+		$this->wan_type = 0;//static ip
+		$this->wan_address = '10.0.0.1';
+		$this->wan_netmask = '255.0.0.0';
+		$this->wan_gateway = '10.0.0.254';
+		$this->wan_pridns = '8.8.8.8';
+		$this->wan_secdns = '';
+		$this->pppoe_username = 'username';
+		$this->pppoe_password = 'password';
+		
+		$this->lan_address = '192.168.0.1';
+		$this->lan_netmask = '255.255.255.0';
+		$this->dhcp_ip_start = '192.168.0.100';
+		$this->dhcp_ip_end = '192.168.0.200';
+		
+		$this->ssid = 'pcduino_wifi';
+		$this->channel = 1;
+		$this->security_type = 1;//wpa2
+		$this->psk_key = '88888888';
 	}
 	
 	public function applySetting()
@@ -156,8 +212,12 @@ class PcduinoSetting extends CFormModel
 	{
 		$config_path_base = '/home/paul/github/pcduinoV3_turbo/yii_php_pcduino/yii/pcduino';
 		$config_file = $config_path_base.'/modules/pcduinoSettings/pcduino.cnf';
-		$config = file_get_contents($config_file);
-		$this->settings = json_decode($config,TRUE);
-		$this->parseJsonData();
+		if (!file_exists($config_file)) {
+			$this->useDefaultSettings();
+		} else {
+			$config = file_get_contents($config_file);
+			$this->settings = json_decode($config,TRUE);
+			$this->parseJsonData();
+		}
 	}
 }

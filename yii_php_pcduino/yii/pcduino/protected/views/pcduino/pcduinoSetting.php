@@ -102,6 +102,19 @@ $cs->registerCssFile(Yii::app()->baseUrl.'/modules/assets/setting.css');
 			<?php echo $form->textField($model,'lan_netmask'); ?>
 			<?php echo $form->error($model,'lan_netmask'); ?>
 		</div>
+		
+		<label>DHCP Address Pools</label>
+		<div class="row">
+			<?php echo $form->labelEx($model,'dhcp_ip_start'); ?>
+			<?php echo $form->textField($model,'dhcp_ip_start'); ?>
+			<?php echo $form->error($model,'dhcp_ip_start'); ?>
+		</div>
+	
+		<div class="row">
+			<?php echo $form->labelEx($model,'dhcp_ip_end'); ?>
+			<?php echo $form->textField($model,'dhcp_ip_end'); ?>
+			<?php echo $form->error($model,'dhcp_ip_end'); ?>
+		</div>
 	</div>
 	<br />
 	<label class="labelclass"> WIFI Settings</label>
