@@ -18,10 +18,6 @@
 #include "cLogger.h"
 #include "cMsgHandler.h"
 #include "fstream"
-//#include "json/json.h"
-//#include "cPcduinoWanSetting.h"
-//#include "cPcduinoLanSetting.h"
-//#include "cPcduinoWifiSetting.h"
 
 #include "cWorkQueue.h"
 #include "cWorkTask.h"
@@ -119,66 +115,42 @@ void CListener::thread_loop()
     }
 }
 
-void *ifdown(void* pArg)
+static void *set_pcduino_config(void* pArg)
 {
-	system("echo fuck you\n");
+	std::string *pPath = (std::string*)pArg;
+	std::string phpCmdPath("/opt/lampp/bin/php");
+	std::string phpScriptPath("/home/paul/github/yii_php_pcduino/yii/pcduino/modules/pcduinoApplySetting.php");
+
+#define CMD_LINE_SIZE 1024
+	char cmd[CMD_LINE_SIZE];
+
+	/*execute php script to write the config files.*/
+	snprintf(cmd, CMD_LINE_SIZE, "%s %s %s", phpCmdPath.c_str(), phpScriptPath.c_str(), pPath->c_str());
+	system(cmd);
+
+	/*restart the related services.*/
+	snprintf(cmd, CMD_LINE_SIZE, "killall hostapd");
+	system(cmd);
+//	snprintf(cmd, CMD_LINE_SIZE, "service /etc/init.d/networking restart");
+//	system(cmd);
+	//snprintf(cmd, CMD_LINE_SIZE, "hostapd -B /etc/hostapd/conf/hostapd.conf");
+//	system(cmd);
+//	snprintf(cmd, CMD_LINE_SIZE, "service isc-dhcp-server restart");
+//	system(cmd);
+
+#undef CMD_LINE_SIZE
+	/*delete the arg, it's a variable from heap.*/
+	delete pPath;
 	return NULL;
 }
 
 static MSG_HANDLE_RETURN_TYPE pcduino_config(MSG_HANDLE_DEFINE_PARAMS)
 {
-#if 0
-    char path[256] = {0};
-    std::fstream fs;
-    char jsonData[8192];
-    if (pBuf == NULL)
-    {
-        return false;
-    }
-    std::cout << pBuf << std::endl;
-    if (len > sizeof(path))
-    {
-        DERROR() << "path is too long.";
-        return false;
-    }
-    memcpy(path, pBuf, len);
-    if( access(path, F_OK) && access(path, R_OK))
-    {
-        return false;
-    }
-    fs.open(path);
-    if( !fs.is_open() )
-    {
-        std::cout << "open failed..." << std::endl;
-        return false;
-    }
-    fs.getline(jsonData,8192);
-    Json::Value root;   // will contain the root value after parsing.
-    Json::Reader reader;
-    //Json::Writer writer;
-    bool parsingSuccessful = reader.parse( std::string(jsonData), root );
-    if ( !parsingSuccessful )
-    {
-        // report to the user the failure and their locations in the document.
-        std::cout  << "Failed to parse configuration\n"
-                   << reader.getFormattedErrorMessages()
-                   << std::endl;
-        //reader.
-        return false;
-    }
-
-    const Json::Value wan = root["wan"];
-    const Json::Value lan = root["lan"];
-    const Json::Value wifi = root["wifi"];
-
-    CPcduinoWanSetting wanSetting(wan);
-    CPcduinoLanSetting lanSetting(lan);
-    CPcduinoWifiSetting wifiSetting(wifi);
-    return wanSetting.apply() && lanSetting.apply() && wifiSetting.apply();
-#else
-    CWorkTask t(ifdown, NULL);
+	DDEBUG() << pBuf; // print the path of the json file.
+	std::string *pPath = new std::string(pBuf, len);
+    CWorkTask t(set_pcduino_config, (void*)pPath);
     CWorkQueue::get_queue()->register_work_task_delay(t, 2);
-#endif
+    return true;
 }
 
 
@@ -207,6 +179,7 @@ void CListener::msg_handle(char *pBuf, unsigned long len)
             if (pHandler == NULL) {
                 return;
             } else {
+            	DDEBUG() << "ELEMENT LENGTH = " << l;
                 pHandler->handle(pPos, l);
             }
         }

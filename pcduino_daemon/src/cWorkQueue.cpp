@@ -134,7 +134,6 @@ bool CWorkQueue::on_wait()
 			pthread_cond_wait(&m_cond[WQ_COND_WAITING], &m_mutex[CWorkQueue::WQ_MUTEX_WAITING]);
 		}
 
-
 		now = get_up_time();
 
 		for (iter = m_waitingQueue.begin(); iter != m_waitingQueue.end();) {
