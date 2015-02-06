@@ -86,17 +86,17 @@ class PcduinoLanSetting extends CFormModel
 	
 	public function applySetting()
 	{
-		$wanSettings = new PcduinoConfiguration;
+		$wanSettings = Yii::app()->PcduinoConfig;
 		$setting = array();
 		$setting['ip_address'] = $this->ip_address;
 		$setting['ip_netmask'] = $this->ip_netmask;
-		$wanSettings->setLanConfiguration($setting);
+		$wanSettings->setLanConfig($setting);
 	}
 	
 	public function gatherSetting()
 	{
-		$wanSettings = new PcduinoConfiguration;
-		$settings = $wanSettings->getLanConfiguration();
+		$wanSettings = Yii::app()->PcduinoConfig;
+		$settings = $wanSettings->getLanConfig();
 		$this->ip_address = $settings['ip_address'];
 		$this->ip_netmask = $settings['ip_netmask'];
 	}

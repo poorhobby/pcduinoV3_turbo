@@ -16,7 +16,7 @@ function add_timing_event()
 				//cancel the interval.
 				clearInterval(timer);
 				// accessing the url.
-				location.href = "http://192.168.254.136/pcduino/index.php?r=pcduino/Setting";
+				location.href = jumpUrl;
 				
 			} else {
 				$("#waitTime").html(left - 1);

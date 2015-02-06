@@ -100,7 +100,7 @@ class PcduinoWanSetting extends CFormModel
 	
 	public function applySetting()
 	{
-		$wanSettings = new PcduinoConfiguration;
+		$wanSettings = Yii::app()->PcduinoConfig;
 		$setting = array();
 		if ($this->wan_type == 0) {
 			$setting['wan_type'] = 'StaticIp';
@@ -113,13 +113,13 @@ class PcduinoWanSetting extends CFormModel
 		$setting['ip_netmask'] = $this->ip_netmask;
 		$setting['pppoe_username'] = $this->pppoe_username;
 		$setting['pppoe_password'] = $this->pppoe_password;
-		$wanSettings->setWanConfiguration($setting);
+		$wanSettings->setWanConfig($setting);
 	}
 	
 	public function gatherSetting()
 	{
-		$wanSettings = new PcduinoConfiguration;
-		$settings = $wanSettings->getWanConfiguration();
+		$wanSettings = Yii::app()->PcduinoConfig;
+		$settings = $wanSettings->getWanConfig();
 		//Yii::log($settings['wan_type'], CLogger::LEVEL_ERROR);
 		if ($settings['wan_type'] == 'StaticIp') {
 			$this->wan_type = 0;

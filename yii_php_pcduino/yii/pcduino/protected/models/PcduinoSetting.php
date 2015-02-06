@@ -143,7 +143,7 @@ class PcduinoSetting extends CFormModel
 	
 	public function applySetting()
 	{
-		$config_path_base = '/home/paul/workspace/yii_php_pcduino/yii/pcduino';
+		$config_path_base = '/home/paul/github/pcduinoV3_turbo/yii_php_pcduino/yii/pcduino';
 		$config_file = $config_path_base.'/modules/pcduinoSettings/pcduino.cnf';
 		$this->genJsonData();
 		$config = json_encode($this->settings, JSON_FORCE_OBJECT);
@@ -154,7 +154,7 @@ class PcduinoSetting extends CFormModel
 	
 	public function gatherSetting()
 	{
-		$config_path_base = '/home/paul/workspace/yii_php_pcduino/yii/pcduino';
+		$config_path_base = '/home/paul/github/pcduinoV3_turbo/yii_php_pcduino/yii/pcduino';
 		$config_file = $config_path_base.'/modules/pcduinoSettings/pcduino.cnf';
 		$config = file_get_contents($config_file);
 		$this->settings = json_decode($config,TRUE);

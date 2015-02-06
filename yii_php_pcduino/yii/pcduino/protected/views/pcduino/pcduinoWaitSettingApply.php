@@ -12,9 +12,12 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 
 $cs=Yii::app()->clientScript;
 $cs->registerCssFile(Yii::app()->baseUrl.'/modules/assets/setting.css');
+$ip = $model->lan_address;
+$url = 'http://'.$ip.'/pcduino/index.php?r=pcduino/Setting';
+$jumpUrlScript = 'var jumpUrl='."\"".$url."\"";
+$cs->registerScript('pcduinoSettingJumpUrl', $jumpUrlScript , CClientScript::POS_HEAD);
 $cs->registerScriptFile(Yii::app()->baseUrl . '/modules/assets/waitSettingApply.js', CClientScript::POS_HEAD);
 ?>
-	
 	<div class="waiting">
 		<p>PCDuino Settings, Please Wait</p>
 		<!--br /-->

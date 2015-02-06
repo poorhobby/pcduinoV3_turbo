@@ -31,7 +31,7 @@ class PcduinoController extends Controller
 			// if requesting index.php, replace with SetupLogin action. 
 			Yii::app()->user->loginRequired();
 		}
-		$this->actionWanSetting();
+		$this->actionSetting();
 	}
 	
 	public function actionLogin()
@@ -75,63 +75,6 @@ class PcduinoController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('phpinfo');
-	}
-	
-	public function actionWanSetting()
-	{
-		$model = new PcduinoWanSetting;
-		if (Yii::app()->user->getIsGuest()) {
-			//Yii::app()->user->setReturnUrl();
-			Yii::app()->user->loginRequired();
-		} else {
-			if(isset($_POST['PcduinoWanSetting'])) {
-				$model->attributes=$_POST['PcduinoWanSetting'];
-				//Yii::log($model->pppoe_username, CLogger::LEVEL_ERROR);
-				$model->applySetting();
-				$this->render('pcduinoWanSetting', array('model'=>$model));
-			} else {
-				$model->gatherSetting();
-				$this->render('pcduinoWanSetting', array('model'=>$model));
-			}
-		}
-	}
-	
-	public function actionLanSetting()
-	{
-		$model = new PcduinoLanSetting;
-		if (Yii::app()->user->getIsGuest()) {
-			//Yii::app()->user->setReturnUrl();
-			Yii::app()->user->loginRequired();
-		} else {
-			if(isset($_POST['PcduinoLanSetting'])) {
-				$model->attributes=$_POST['PcduinoLanSetting'];
-				//Yii::log($model->pppoe_username, CLogger::LEVEL_ERROR);
-				$model->applySetting();
-				$this->render('pcduinoLanSetting', array('model'=>$model));
-			} else {
-				$model->gatherSetting();
-				$this->render('pcduinoLanSetting', array('model'=>$model));
-			}
-		}
-	}
-	
-	public function actionWifiSetting()
-	{
-		$model = new PcduinoWifiSetting;
-		if (Yii::app()->user->getIsGuest()) {
-			//Yii::app()->user->setReturnUrl();
-			Yii::app()->user->loginRequired();
-		} else {
-			if(isset($_POST['PcduinoWifiSetting'])) {
-				$model->attributes=$_POST['PcduinoWifiSetting'];
-				//Yii::log($model->pppoe_username, CLogger::LEVEL_ERROR);
-				$model->applySetting();
-				$this->render('pcduinoWifiSetting', array('model'=>$model));
-			} else {
-				$model->gatherSetting();
-				$this->render('pcduinoWifiSetting', array('model'=>$model));
-			}
-		}
 	}
 	
 	public function actionSetting()

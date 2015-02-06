@@ -90,20 +90,20 @@ class PcduinoWifiSetting extends CFormModel
 	public function applySetting()
 	{
 		$security_list = array(0=>'WPA', 1=>'WPA2');
-		$wanSettings = new PcduinoConfiguration;
+		$wanSettings = new PcduinoConfig;
 		$setting = array();
 		$setting['ssid'] = $this->ssid;
 		$setting['channel'] = $this->channel;
 		$setting['security_type'] = $security_list[$this->security_type];
 		$setting['psk_key'] = $this->psk_key;
-		$wanSettings->setWifiConfiguration($setting);
+		$wanSettings->setWifiConfig($setting);
 	}
 	
 	public function gatherSetting()
 	{
 		$security_list = array('WPA'=>0, 'WPA2'=>1);
-		$wanSettings = new PcduinoConfiguration;
-		$settings = $wanSettings->getWifiConfiguration();
+		$wanSettings = new PcduinoConfig;
+		$settings = $wanSettings->getWifiConfig();
 		$this->ssid = $settings['ssid'];
 		$this->channel = $settings['channel'];
 		$this->security_type = $security_list[$settings['security_type']];

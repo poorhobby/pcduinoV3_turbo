@@ -1,7 +1,7 @@
 <?php
-    class PcduinoConfiguration
+    class PcduinoConfig extends CModule
     {
-    	private $config_path_base = '/home/paul/workspace/yii_php_pcduino/yii/pcduino';
+    	private $config_path_base = '/home/paul/github/pcduinoV3_turbo/yii_php_pcduino/yii/pcduino';
     	public $wan_config;
 		public $lan_config;
 		public $wifi_config;
@@ -12,7 +12,7 @@
 			$this->lan_config = $this->config_path_base.'/modules/pcduinoSettings/lan.cnf';
 			$this->wifi_config = $this->config_path_base.'/modules/pcduinoSettings/wifi.cnf';
 		}
-		public function getWanConfiguration()
+		public function getWanConfig()
 		{
 			$wan = array('wan_type'=>'StaticIP', 
 				'ip_address'=>'10.0.0.1', 
@@ -36,7 +36,7 @@
 			return $wan;
 		}
 		
-		public function setWanConfiguration($Settings)
+		public function setWanConfig($Settings)
 		{
 			$wan = array('wan_type', 'ip_address', 'ip_netmask', 'pppoe_username', 'pppoe_password');
 			$fp = fopen($this->wan_config, "w");
@@ -56,7 +56,7 @@
 			$this->applyConfig('wan');
 		}
 		
-		public function getLanConfiguration()
+		public function getLanConfig()
 		{
 			$lan = array('ip_address'=>'192.168.1.1', 'ip_netmask'=>'255.255.255.0');
 			$fp = fopen($this->lan_config, "r"); 
@@ -75,7 +75,7 @@
 			return $lan;
 		}
 		
-		public function setLanConfiguration($Settings)
+		public function setLanConfig($Settings)
 		{
 			$lan = array('wan_type', 'ip_address', 'ip_netmask', 'pppoe_username', 'pppoe_password');
 			$fp = fopen($this->lan_config, "w");
@@ -95,7 +95,7 @@
 			$this->applyConfig('lan');
 		}
 		
-		public function getWifiConfiguration()
+		public function getWifiConfig()
 		{
 			$wifi = array('ssid'=>'pcduino', 'channel'=>'1','security_type'=>'WPA2', 'psk_key'=>'pcduino_key');
 			$fp = fopen($this->wifi_config, "r"); 
@@ -114,7 +114,7 @@
 			return $wifi;
 		}
 		
-		public function setWifiConfiguration($Settings)
+		public function setWifiConfig($Settings)
 		{
 			$config = json_encode($Settings);
 			
