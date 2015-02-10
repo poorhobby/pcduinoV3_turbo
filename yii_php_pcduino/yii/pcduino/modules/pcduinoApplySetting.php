@@ -22,28 +22,30 @@
  * manufacturer=Realtek
  */
  
-$config_path_base = '/home/paul/pcduino/yii_php_pcduino/yii/pcduino';
-$config_file = $config_path_base.'/modules/pcduinoSettings/pcduino.cnf';
-$config = file_get_contents($config_file);
-$setting = json_decode($config);
-
 echo $_SERVER["argc"];
 echo "\n";
 echo $_SERVER["argv"][0];
 echo "\n";
+
+$config_file = $_SERVER["argv"][1];
+ 
+$config = file_get_contents($config_file);
+$setting = json_decode($config);
+
+$gen_setting_path = "/usr/settings";
 
 /*
  * WIFI part.
  */
 if (isset($setting->wifi)) {
 	echo "wifi settings.\n";
-	$hostapd_conf_path='/home/paul/pcduino/yii_php_pcduino/yii/pcduino/hostapd.conf';
+	$hostapd_conf_path=$gen_setting_path.'/hostapd.conf';
 	echo $hostapd_conf_path;
 	echo "\n";
 	
 	$hostapd_conf = fopen($hostapd_conf_path, 'w');
 	
-	fputs($hostapd_conf, "# Basaic configuration\n");
+	fputs($hostapd_conf, "# Basic configuration\n");
 	fputs($hostapd_conf, "interface=wlan5\n");
 	if (isset($setting->wifi->ssid)) {
 		echo "set ssid = ".$setting->wifi->ssid."\n";
@@ -88,13 +90,13 @@ if (isset($setting->wifi)) {
 	fputs($hostapd_conf, "hw_mode=g\n");
 	fputs($hostapd_conf, "device_name=RTL8192CU\n");
 	fputs($hostapd_conf, "manufacturer=Realtek\n");
-	
+	fputs($hostapd_conf, "\n");
 	fclose($hostapd_conf);
 }
 
 if (isset($setting->wan)) {
 	echo "wan settings.\n";
-	$interfaces_conf_path='/home/paul/pcduino/yii_php_pcduino/yii/pcduino/interfaces';
+	$interfaces_conf_path=$gen_setting_path.'/interfaces';
 	switch ($setting->wan->wan_type) {
 		case '0':
 			// static ip
@@ -107,6 +109,7 @@ if (isset($setting->wan)) {
 			fputs($interfaces_conf, "iface wlan5 inet static\n");
 			fputs($interfaces_conf, "\taddress ".$setting->lan->lan_address."\n");
 			fputs($interfaces_conf, "\tnetmask ".$setting->lan->lan_netmask."\n");
+			fputs($interfaces_conf, "\n");
 			fclose($interfaces_conf);
 			
 			//todo gateway
@@ -124,4 +127,17 @@ if (isset($setting->wan)) {
 			break;
 	}
 }
+if (isset($setting->lan)) {
+	$dhcp_conf_path=$gen_setting_path.'/dncpd.conf';
+	$dhcp_conf = fopen($dhcp_conf_path, 'w');
+	fputs($dhcp_conf, "subnet 192.168.100.0 netmask 255.255.255.0\n");
+	fputs($dhcp_conf, "{\n");
+		fputs($dhcp_conf, "\trange 192.168.100.10 192.168.100.100;\n");
+		fputs($dhcp_conf, "\toption routers ".$setting->lan->lan_address.";\n");
+		fputs($dhcp_conf, "\tdomain-name-servers 218.2.135.1;\n");
+	fputs($dhcp_conf, "}\n");
+	fputs($dhcp_conf, "\n");
+	fclose($dhcp_conf);
+}
+
 
