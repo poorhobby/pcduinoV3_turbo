@@ -153,10 +153,35 @@ static MSG_HANDLE_RETURN_TYPE pcduino_config(MSG_HANDLE_DEFINE_PARAMS)
     return true;
 }
 
+static void *pcduino_wget_download(void* pArg)
+{
+	std::string *pUrl = (std::string*)pArg;
+	std::string outputDir("/home/paul/Downloads");
+	std::string cmd("wget ");
+
+	cmd.append("-x -P ").append(outputDir).append(" ").append(pUrl->c_str()).append("&");
+
+	::system(cmd.c_str());
+	std::cout << cmd.c_str();
+	std::flush(std::cout);
+
+	delete pUrl;
+	return NULL;
+}
+
+static MSG_HANDLE_RETURN_TYPE pcduino_wget(MSG_HANDLE_DEFINE_PARAMS)
+{
+	DDEBUG() << pBuf; // print the path of the json file.
+	std::string *pUrl = new std::string(pBuf, len);
+	CWorkTask t(pcduino_wget_download, (void*)pUrl);
+	CWorkQueue::get_queue()->register_work_task(t);
+	return true;
+}
 
 static CMsgHandler s_msgTab[] =
 {
     CMsgHandler(MSG_ELEMENT_PCDUINO_CONFIG, 0, pcduino_config),
+	CMsgHandler(MSG_ELEMENT_PCDUINO_WGET, 0, pcduino_wget),
 };
 
 void CListener::msg_handle(char *pBuf, unsigned long len)
@@ -175,7 +200,7 @@ void CListener::msg_handle(char *pBuf, unsigned long len)
         }
         {
             CMsgHandler *pHandler;
-            pHandler = CMsgHandler::findElementById(MSG_ELEMENT_PCDUINO_CONFIG, s_msgTab, TABLE_COUNT(s_msgTab));
+            pHandler = CMsgHandler::findElementById(id, s_msgTab, TABLE_COUNT(s_msgTab));
             if (pHandler == NULL) {
                 return;
             } else {
