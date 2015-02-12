@@ -12,7 +12,13 @@ Yii::app()->clientScript->registerCoreScript('jquery');
 
 $cs=Yii::app()->clientScript;
 $cs->registerCssFile(Yii::app()->baseUrl.'/modules/assets/setting.css');
-$ip = $model->lan_address;
+if($model->lan_or_wan) {
+	echo $model->lan_or_wan;
+	$ip = $model->wan_address;
+} else {
+	$ip = $model->lan_address;
+}
+
 $url = 'http://'.$ip.'/pcduino/index.php?r=pcduino/Setting';
 $jumpUrlScript = 'var jumpUrl='."\"".$url."\"";
 $cs->registerScript('pcduinoSettingJumpUrl', $jumpUrlScript , CClientScript::POS_HEAD);

@@ -85,6 +85,8 @@ class PcduinoController extends Controller
 			Yii::app()->user->loginRequired();
 		} else {
 			if(isset($_POST['PcduinoSetting'])) {
+				$model->gatherSetting();
+				$model->lanOrWan($_SERVER['REMOTE_ADDR']);
 				$model->attributes=$_POST['PcduinoSetting'];
 				//Yii::log($model->pppoe_username, CLogger::LEVEL_ERROR);
 				$model->applySetting();

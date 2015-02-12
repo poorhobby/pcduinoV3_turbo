@@ -33,6 +33,8 @@ class PcduinoSetting extends CFormModel
 	public $security_type;
 	public $psk_key;
 	
+	public $lan_or_wan;
+	
 	private $settings;
 	private $config_path_base = '/usr/settings';
 	private $cliCmd = '/usr/settings/pcduino_cli';
@@ -197,6 +199,15 @@ class PcduinoSetting extends CFormModel
 		$this->channel = 1;
 		$this->security_type = 1;//wpa2
 		$this->psk_key = '88888888';
+	}
+	
+	public function lanOrWan($remote_addr)
+	{
+		if (strcmp($remote_addr, $this->lan_address)) {
+			$this->lan_or_wan = 0;
+		} else {
+			$this->lan_or_wan = 1;
+		}
 	}
 	
 	public function applySetting()
