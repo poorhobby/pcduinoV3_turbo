@@ -39,6 +39,7 @@
 				// array('label'=>'LanSetting', 'url'=>array('/pcduino/LanSetting')),
 				// array('label'=>'WifiSetting', 'url'=>array('/pcduino/WifiSetting')),
 				array('label'=>'Setting', 'url'=>array('/pcduino/Setting')),
+				array('label'=>'Download', 'url'=>array('/pcduino/Download')),
 			),
 		)); ?>
 	</div><!-- mainmenu -->

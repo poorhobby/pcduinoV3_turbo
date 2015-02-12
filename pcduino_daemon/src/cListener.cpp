@@ -118,8 +118,8 @@ void CListener::thread_loop()
 static void *set_pcduino_config(void* pArg)
 {
 	std::string *pPath = (std::string*)pArg;
-	std::string phpCmdPath("/opt/lampp/bin/php");
-	std::string phpScriptPath("/home/paul/github/yii_php_pcduino/yii/pcduino/modules/pcduinoApplySetting.php");
+	std::string phpCmdPath("/usr/sbin/php5");
+	std::string phpScriptPath("/usr/settings/pcduinoGenConfig.php");
 
 #define CMD_LINE_SIZE 1024
 	char cmd[CMD_LINE_SIZE];
@@ -155,8 +155,10 @@ static MSG_HANDLE_RETURN_TYPE pcduino_config(MSG_HANDLE_DEFINE_PARAMS)
 
 static void *pcduino_wget_download(void* pArg)
 {
+	//TODO download task should be more detailed.
+	// should be able to return the status of the download job.
 	std::string *pUrl = (std::string*)pArg;
-	std::string outputDir("/home/paul/Downloads");
+	std::string outputDir("/tmp/ftp");
 	std::string cmd("wget ");
 
 	cmd.append("-x -P ").append(outputDir).append(" ").append(pUrl->c_str()).append("&");
@@ -209,5 +211,4 @@ void CListener::msg_handle(char *pBuf, unsigned long len)
             }
         }
     }
-
 }

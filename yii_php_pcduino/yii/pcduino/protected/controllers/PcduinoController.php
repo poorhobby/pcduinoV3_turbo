@@ -95,4 +95,22 @@ class PcduinoController extends Controller
 			}
 		}
 	}
+	
+	public function actionDownload()
+	{
+		$model = new PcduinoWget;
+		if (Yii::app()->user->getIsGuest()) {
+			//Yii::app()->user->setReturnUrl();
+			Yii::app()->user->loginRequired();
+		} else {
+			if(isset($_POST['PcduinoWget'])) {
+				$model->attributes=$_POST['PcduinoWget'];
+				//Yii::log($model->pppoe_username, CLogger::LEVEL_ERROR);
+				$model->download();
+				$this->render('pcduinoWget', array('model'=>$model));
+			} else {
+				$this->render('pcduinoWget', array('model'=>$model));
+			}
+		}
+	}
 }

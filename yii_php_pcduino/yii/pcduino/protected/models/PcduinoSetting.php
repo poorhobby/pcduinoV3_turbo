@@ -34,6 +34,8 @@ class PcduinoSetting extends CFormModel
 	public $psk_key;
 	
 	private $settings;
+	private $config_path_base = '/usr/settings';
+	private $cliCmd = '/usr/settings/pcduino_cli';
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -199,19 +201,16 @@ class PcduinoSetting extends CFormModel
 	
 	public function applySetting()
 	{
-		$config_path_base = '/usr/settings';
-		$config_file = $config_path_base.'/pcduino.cnf';
+		$config_file = $this->config_path_base.'/pcduino.cnf';
 		$this->genJsonData();
 		$config = json_encode($this->settings, JSON_FORCE_OBJECT);
 		file_put_contents($config_file, $config);
-		$cliPath = $config_path_base.'/pcduino_cli';
-		$result = exec($cliPath.' -s '.$config_file);
+		$result = exec($this->cliCmd.' -s '.$config_file);
 	}
 	
 	public function gatherSetting()
 	{
-		$config_path_base = '/usr/settings';
-		$config_file = $config_path_base.'/pcduino.cnf';
+		$config_file = $this->config_path_base.'/pcduino.cnf';
 		if (!file_exists($config_file)) {
 			$this->useDefaultSettings();
 		} else {
